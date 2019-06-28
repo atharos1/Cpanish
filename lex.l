@@ -31,6 +31,10 @@ newline         [\n]
 "que vale"          {return asignar;}
 "ahora vale"        {return reasignar;}
 "."                 {return punto;}
+"("                 {return par_abrir;}
+")"                 {return par_cerrar;}
+"+"                 {return suma;}
+"-"                 {return resta;}
 
 \".*\"                          {   char * str = malloc(strlen(yytext)+1);
                                     strcpy(str, yytext);

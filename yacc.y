@@ -15,9 +15,9 @@
 }
 
 /* Tokens */
-%token t_cadena t_entero asignar reasignar punto
+%token t_cadena t_entero asignar reasignar punto par_abrir par_cerrar suma resta
 %token<value> cadena entero var_id
-%type<node> PROGRAMA LINEA INSTRUCCION DECLARACION ASIGNACION REASIGNACION TIPO EXPRESION
+%type<node> PROGRAMA LINEA INSTRUCCION DECLARACION ASIGNACION REASIGNACION TIPO EXPRESION OPERACION
 %start PROGRAMA
 
 /* Producciones */
@@ -62,6 +62,16 @@ TIPO            : t_cadena                          {   $$ = newNode(TYPE_VALUE,
 
 EXPRESION       : cadena                            {   $$ = newNode(TYPE_STRING, $1); }
                 | entero                            {   $$ = newNode(TYPE_INT, $1); }
+                | var_id                            {   $$ = newNode(TYPE_VALUE, $1); }
+                | par_abrir EXPRESION par_cerrar    {   $$ = newNode(TYPE_EMPTY, NULL); 
+                                                        append($$, newNode(TYPE_VALUE, "("));
+                                                        append($$, $2);
+                                                        append($$, newNode(TYPE_VALUE, ")"); }
+                | OPERACION
+                ;
+
+OPERACION       : EXPRESION suma EXPRESION             {   $$ = newNode(TYPE_EMPTY, NULL)}
+                | EXPRESION resta EXPRESION
                 ;
 
 %%
