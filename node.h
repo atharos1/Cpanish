@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef enum types {TYPE_EMPTY, TYPE_VALUE, TYPE_STRING, TYPE_INT} type;
+typedef enum types {TYPE_EMPTY, TYPE_LITERAL, TYPE_STRING, TYPE_INT} type;
 
 typedef struct Node {
 	type type;

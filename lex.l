@@ -3,6 +3,7 @@
     #include <stdlib.h>
     #include "y.tab.h"
 
+    extern void yyerror(char * s);
     int lineCount = 1;
 %}
 
@@ -30,6 +31,7 @@ newline         [\n]
 "es una cadena"     {return t_cadena;}
 "que vale"          {return asignar;}
 "ahora vale"        {return reasignar;}
+"Mostrar"           {return mostrar; }
 "."                 {return punto;}
 "("                 {return par_abrir;}
 ")"                 {return par_cerrar;}
@@ -42,7 +44,7 @@ newline         [\n]
                                     return cadena;
                                 }
 
-{digit}+                        {   char * str = malloc(strlen(yytext)+1);
+-?{digit}+                        {   char * str = malloc(strlen(yytext)+1);
 			                        strcpy(str, yytext);
 			                        yylval.value = str;
 			                        return entero; }
@@ -51,6 +53,8 @@ newline         [\n]
 			                        strcpy(str,yytext);
 			                        yylval.value = str;
 			                        return var_id; }
+
+.                               {   yyerror("Caracter invalido"); }
 
 %%
 

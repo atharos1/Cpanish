@@ -1,3 +1,6 @@
 A es un entero que vale 20 - (5 + 3).
-B es una cadena.
+B es una cadena que vale asd.
 A ahora vale 10.
+/* Holis */
+B ahora vale B + B.
+Mostrar "Hola" + "Chau".
