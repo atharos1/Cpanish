@@ -66,12 +66,18 @@ EXPRESION       : cadena                            {   $$ = newNode(TYPE_STRING
                 | par_abrir EXPRESION par_cerrar    {   $$ = newNode(TYPE_EMPTY, NULL); 
                                                         append($$, newNode(TYPE_VALUE, "("));
                                                         append($$, $2);
-                                                        append($$, newNode(TYPE_VALUE, ")"); }
-                | OPERACION
+                                                        append($$, newNode(TYPE_VALUE, ")")); }
+                | OPERACION                         {   $$ = $1; }
                 ;
 
-OPERACION       : EXPRESION suma EXPRESION             {   $$ = newNode(TYPE_EMPTY, NULL)}
-                | EXPRESION resta EXPRESION
+OPERACION       : EXPRESION suma EXPRESION          {   $$ = newNode(TYPE_EMPTY, NULL);
+                                                        append($$, $1);
+                                                        append($$, newNode(TYPE_VALUE, " + "));
+                                                        append($$, $3); }
+                | EXPRESION resta EXPRESION         {   $$ = newNode(TYPE_EMPTY, NULL);
+                                                        append($$, $1);
+                                                        append($$, newNode(TYPE_VALUE, " - "));
+                                                        append($$, $3); }
                 ;
 
 %%
