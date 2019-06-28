@@ -1,7 +1,7 @@
 all:
 	yacc -d yacc.y
 	lex lex.l
-	gcc -o comp y.tab.c lex.yy.c node.c
+	gcc -o compiler y.tab.c lex.yy.c node.c
 
 clean:
-	rm comp lex.yy.c y.tab.c y.tab.h
+	rm compiler lex.yy.c y.tab.c y.tab.h

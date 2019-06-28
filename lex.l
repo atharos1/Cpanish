@@ -2,18 +2,29 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include "y.tab.h"
+
+    int lineCount = 1;
 %}
 
 
-%option 
+%option
+%x comment
+
 digit			[0-9]
 alpha			[a-zA-Z_]
-space			[ \t\n]
+space			[ \t]
+newline         [\n]
 
 %%
 
-"/*"(.|\n)*"*/"		;/* comments */
-{space}+            ;/* spaces */ 
+"/*"                    BEGIN(comment);
+<comment>[^*\n]*        {}
+<comment>"*"+[^*/\n]*   {}
+<comment>\n             lineCount++;
+<comment>"*"+"/"        BEGIN(INITIAL);
+
+{space}+            ;/* spaces */
+{newline}           {lineCount++;}
 
 "es un entero"      {return t_entero;}
 "es una cadena"     {return t_cadena;}

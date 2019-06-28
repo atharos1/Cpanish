@@ -6,6 +6,7 @@
 
 	int yylex();
 	void yyerror(char * s);
+    extern int lineCount;
 %}
 
 %union {
@@ -71,7 +72,6 @@ int main(void){
 }
 
 void yyerror(char * s){
-    fprintf(stderr, "Error\n");
-	//fprintf(stderr, "%s\n", s);
+    fprintf(stderr, "Error on line %d: %s\n", lineCount, s);
 	return;
 }

@@ -1,0 +1,5 @@
+A es una cadena que vale "Hello World".
+/* Este es un
+comentario de varias lineas */
+Este es un syntax error
+A ahora vale "Bye World".
