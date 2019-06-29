@@ -1,5 +1,7 @@
-A es una cadena que vale "Hello World".
-/* Este es un
-comentario de varias lineas */
-Este es un syntax error
-A ahora vale "Bye World".
+Principal es una funcion que devuelve es un entero:
+    A es una cadena que vale "Hello World".
+    /* Este es un
+    comentario de varias lineas */
+    Este es un syntax error
+    A ahora vale "Bye World".
+Fin.

@@ -27,6 +27,13 @@ newline         [\n]
 {space}+            ;/* spaces */
 {newline}           {lineCount++;}
 
+\".*\"                          {   char * str = malloc(strlen(yytext)+1);
+                                    strcpy(str, yytext);
+                                    yylval.value = str;
+                                    return cadena;
+                                }
+
+","                 {return coma;}
 "es un entero"      {return t_entero;}
 "es una cadena"     {return t_cadena;}
 "que vale"          {return asignar;}
@@ -49,14 +56,13 @@ newline         [\n]
 "es menor o igual a"   {return menor_igual;}
 "es distinto a"        {return distinto;}
 "Repetir mientras"     {return repetir_mientras;}
-"Incrementar "      {return incrementar;}
-"Decrementar "      {return decrementar;}
-
-\".*\"                          {   char * str = malloc(strlen(yytext)+1);
-                                    strcpy(str, yytext);
-                                    yylval.value = str;
-                                    return cadena;
-                                }
+"Incrementar "         {return incrementar;}
+"Decrementar "         {return decrementar;}
+"es una funcion "      {return es_funcion;}
+"que devuelve "       {return devuelve;}
+"Principal "           {return principal;}
+"Devolver "           {return devolver;}
+"Recibe"           {return recibe;}
 
 -?{digit}+                      {   char * str = malloc(strlen(yytext)+1);
 			                        strcpy(str, yytext);

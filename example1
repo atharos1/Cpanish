@@ -1,18 +1,28 @@
-A es un entero que vale 20 - (5 + 3).
-B es una cadena que vale asd.
-A ahora vale 10.
-B ahora vale B + B.
-Mostrar "Hola" + "Chau".
+Principal es una funcion que devuelve es un entero:
+    A es un entero que vale 20 - (5 + 3).
+    B es una cadena que vale "asd".
+    A ahora vale 10.
+    B ahora vale B + B.
+    Mostrar "Hola" + "Chau".
 
-Si A es distinto a 20 y A es mayor o igual a 15:
-    A ahora vale 11.
-    Mostrar "Yay!".
+    Si A es distinto a 20 y A es mayor o igual a 15:
+        A ahora vale 11.
+        Mostrar "Yay!".
+    Fin.
+
+    /* Tendría que ser "Repetir mientras A SEA mayor a 0:" */
+    Repetir mientras A es mayor a 0:
+        Decrementar A.
+        Mostrar "Decrementando".
+    Fin.
+
+    Incrementar A.
 Fin.
 
-/* Tendría que ser "Repetir mientras A SEA mayor a 0:" */
-Repetir mientras A es mayor a 0:
-    Decrementar A.
-    Mostrar "Decrementando".
-Fin.
+SumaPrueba es una funcion que devuelve es un entero.
+Recibe: A es un entero, B es una cadena:
 
-Incrementar A.
+    Incrementar A.
+    Devolver (A + 1).
+
+Fin.
