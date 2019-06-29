@@ -105,5 +105,18 @@ void yyerror(char * s){
 }
 
 void printHeaders() {
-    //TODO
+    puts("/* DEPENDENCIAS DEL COMPILADOR */");
+    char * strCatFunction = "char * strconcat(char * str1, char * str2) {\n"
+                                "\tchar * newstr = malloc( strlen(str1) + strlen(str2) - 1 );\n"
+                                "\tstrcpy(newstr, str1);\n"
+                                "\tstrcat(newstr, str2);\n"
+                                "\treturn newstr;\n"
+                            "}";
+
+    puts("#include <stdio.h>");
+    puts("#include <string.h>");
+
+    puts(strCatFunction);
+    puts("/* DEPENDENCIAS DEL COMPILADOR */\n");
 }
+

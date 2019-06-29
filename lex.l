@@ -44,7 +44,7 @@ newline         [\n]
                                     return cadena;
                                 }
 
--?{digit}+                        {   char * str = malloc(strlen(yytext)+1);
+-?{digit}+                      {   char * str = malloc(strlen(yytext)+1);
 			                        strcpy(str, yytext);
 			                        yylval.value = str;
 			                        return entero; }
