@@ -37,6 +37,20 @@ newline         [\n]
 ")"                 {return par_cerrar;}
 "+"                 {return suma;}
 "-"                 {return resta;}
+"Si"                {return si;}
+":"                 {return dos_puntos;}
+"Fin"               {return fin;}
+" y "               {return y;}
+" o "               {return o;}
+"es igual a"        {return igual;}
+"es mayor a"        {return mayor;}
+"es mayor o igual a"   {return mayor_igual;}
+"es menor a"           {return menor;}
+"es menor o igual a"   {return menor_igual;}
+"es distinto a"        {return distinto;}
+"Repetir mientras"     {return repetir_mientras;}
+"Incrementar "      {return incrementar;}
+"Decrementar "      {return decrementar;}
 
 \".*\"                          {   char * str = malloc(strlen(yytext)+1);
                                     strcpy(str, yytext);
