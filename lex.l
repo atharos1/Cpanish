@@ -69,7 +69,7 @@ newline         [\n]
 			                        yylval.value = str;
 			                        return entero; }
 
-{alpha}({alpha}|{digit})*       {   char * str = malloc(strlen(yytext)+1);
+{alpha}({alpha}|{digit}|'_')*       {   char * str = malloc(strlen(yytext)+1);
 			                        strcpy(str,yytext);
 			                        yylval.value = str;
 			                        return var_id; }

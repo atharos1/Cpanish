@@ -2,12 +2,15 @@
 	#include <stdio.h>
 	#include <stdlib.h>
 	#include <ctype.h>
-	#include "node.h"
+	#include "node.h"    
+    #include <fcntl.h>
+    #include <unistd.h>
 
 	int yylex();
 	void yyerror(char * s);
     void printHeaders();
     extern int lineCount;
+    extern FILE *yyin;
 %}
 
 %union {
@@ -225,8 +228,60 @@ COMPARADOR      : distinto                          {   $$ = newNode(TYPE_LITERA
 
 %%
 
-int main(void){
+void initializeCompiler(char * inputFile) {
+    FILE * read_file = fopen (inputFile, "r");
+    if (read_file == NULL) {
+        printf ("El archivo de código especificado no se encuentra o no puede abrirse.\n");
+        exit(1);
+    }
+
+    yyin = read_file;
+
+    tmpFile = fopen(TMP_FILE_NAME, "w");
+    if (tmpFile == NULL) {
+        printf ("Error al crear archivo temporal. Compilación abortada.\n");
+        exit(1);
+    }
+}
+
+void freeResources() {
+    fclose(tmpFile);
+    fclose(yyin);
+}
+
+void compileC(char * outputFile) {
+    char commandBuffer[256];
+    sprintf(commandBuffer, "gcc %s -o %s", TMP_FILE_NAME, outputFile);
+
+    int gccStatus = system(commandBuffer);
+
+    if(remove(TMP_FILE_NAME)) {
+        printf ("Error al eliminar el archivo de código intermedio.\n");
+        exit(1);
+    }
+
+    if(gccStatus != 0) {
+        printf ("Error al compilar el código intermedio generado.\n");
+        exit(1);
+    }
+}
+
+int main(int argc, char *argv[]) {
+    if(argc == 1) {
+        fprintf(stderr, "Ingrese la ruta del archivo de código a compilar.\n");
+	    exit(1);
+    }
+
+    if(argc == 2)
+        argv[2] = "a.out";
+
+    initializeCompiler(argv[1]);
+
     yyparse();
+
+    freeResources();
+
+    compileC(argv[2]);
     return 0;
 }
 
@@ -236,18 +291,16 @@ void yyerror(char * s){
 }
 
 void printHeaders() {
-    puts("/* DEPENDENCIAS DEL COMPILADOR */");
     char * strCatFunction = "char * strconcat(char * str1, char * str2) {\n"
                                 "\tchar * newstr = malloc( strlen(str1) + strlen(str2) - 1 );\n"
                                 "\tstrcpy(newstr, str1);\n"
                                 "\tstrcat(newstr, str2);\n"
                                 "\treturn newstr;\n"
-                            "}";
+                            "}\n";
 
-    puts("#include <stdio.h>");
-    puts("#include <stdlib.h>");
-    puts("#include <string.h>");
+    fprintf(tmpFile, "#include <stdio.h>\n");
+    fprintf(tmpFile, "#include <stdlib.h>\n");
+    fprintf(tmpFile, "#include <string.h>\n");
 
-    puts(strCatFunction);
-    puts("/* DEPENDENCIAS DEL COMPILADOR */\n");
+    fprintf(tmpFile, strCatFunction);
 }

@@ -1,7 +1,8 @@
 Principal es una funcion que devuelve es un entero:
+    hola_mundo_a es una cadena.
     A es un entero que vale 20 - (5 + 3).
     B es una cadena que vale "asd".
-    A ahora vale 10.
+    A ahora vale -10.
     B ahora vale B + B.
     Mostrar "Hola" + "Chau".
 

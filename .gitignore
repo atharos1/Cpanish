@@ -3,3 +3,4 @@ y.tab.h
 lex.yy.c
 compiler
 .vscode/*
+*.out

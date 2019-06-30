@@ -31,7 +31,7 @@ void append(Node * parent, Node * node) {
 
 void printInorder(Node * node) {
     if (node->type != TYPE_EMPTY)
-        printf("%s", node->value);
+        fprintf(tmpFile, "%s", node->value);
     else {
         Node * aux = node->leftChild;
         while(aux != NULL) {

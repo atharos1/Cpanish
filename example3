@@ -1,0 +1,8 @@
+Principal es una funcion que devuelve es un entero:
+    A es una cadena que vale "Hello World".
+    /* Este es un
+    comentario de varias lineas */
+    A ahora vale "Bye World".
+
+    Mostrar A.
+Fin.
