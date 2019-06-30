@@ -1,8 +1,10 @@
 Principal es una funcion que devuelve es un entero:
-    A es una cadena que vale "Hello World".
+    A es una cadena que vale 3 * ("Hello" + " " + "World" + " - ").
     /* Este es un
     comentario de varias lineas */
-    A ahora vale "Bye World".
-
+    B es un entero que vale (((10 + 10) * 3) - 10) * 4.
+    C es un entero que vale 3 * (A + 10) +  "Hola".
+    D es una cadena.
+    D ahora vale "Hola" * 0.
     Mostrar A.
 Fin.

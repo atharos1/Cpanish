@@ -12,7 +12,7 @@
 %x comment
 
 digit			[0-9]
-alpha			[a-zA-Z_]
+alpha			[a-zA-Z_-]
 space			[ \t]
 newline         [\n]
 
@@ -27,7 +27,7 @@ newline         [\n]
 {space}+            ;/* spaces */
 {newline}           {lineCount++;}
 
-\".*\"                          {   char * str = malloc(strlen(yytext)+1);
+\"[^"]*\"                          {   char * str = malloc(strlen(yytext)+1);
                                     strcpy(str, yytext);
                                     yylval.value = str;
                                     return cadena;
@@ -44,6 +44,8 @@ newline         [\n]
 ")"                 {return par_cerrar;}
 "+"                 {return suma;}
 "-"                 {return resta;}
+"*"                 {return mult;}
+"/"                 {return divis;}
 "Si"                {return si;}
 ":"                 {return dos_puntos;}
 "Fin"               {return fin;}
@@ -55,6 +57,12 @@ newline         [\n]
 "es menor a"           {return menor;}
 "es menor o igual a"   {return menor_igual;}
 "es distinto a"        {return distinto;}
+"sea igual a"        {return igual;}
+"sea mayor a"        {return mayor;}
+"sea mayor o igual a"   {return mayor_igual;}
+"sea menor a"           {return menor;}
+"sea menor o igual a"   {return menor_igual;}
+"sea distinto a"        {return distinto;}
 "Repetir mientras"     {return repetir_mientras;}
 "Incrementar "         {return incrementar;}
 "Decrementar "         {return decrementar;}
@@ -74,7 +82,7 @@ newline         [\n]
 			                        yylval.value = str;
 			                        return var_id; }
 
-.                               {   yyerror("Caracter invalido"); }
+.                               {   yyerror("Caracter invalido\n"); }
 
 %%
 

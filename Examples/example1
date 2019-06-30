@@ -6,7 +6,7 @@ Principal es una funcion que devuelve es un entero:
     B ahora vale B + B.
     Mostrar "Hola" + "Chau".
 
-    Si A es distinto a 20 y A es mayor o igual a 15:
+    Si B es distinto a "asd" y A es mayor o igual a 15:
         A ahora vale 11.
         Mostrar "Yay!".
     Fin.
