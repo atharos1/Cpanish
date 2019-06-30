@@ -1,6 +1,8 @@
 Principal es una funcion que devuelve es un entero:
     A es un entero.
     Si A es igual a 5:
-        Mostrar "Hola".
+        A es una cadena.
+        Mostrar A.
     Fin.
+    Mostrar A.
 Fin.

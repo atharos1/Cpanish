@@ -32,10 +32,10 @@ Node * subtractExpressions(Node * n1, Node * n2);
 Node * multiplyExpressions(Node * n1, Node * n2);
 Node * divideExpressions(Node * n1, Node * n2);
 
-void openScope();
-void closeScope();
-
 int addVar(char * name, int type);
 int getType(char * varName);
+void openScope();
+void closeScope();
+int isInCurrentScope(char * varName);
 
 #endif

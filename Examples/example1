@@ -1,3 +1,11 @@
+SumaPrueba es una funcion que devuelve es un entero.
+Recibe: A es un entero, B es una cadena:
+
+    Incrementar A.
+    Devolver (A + 1).
+
+Fin.
+
 Principal es una funcion que devuelve es un entero:
     hola_mundo_a es una cadena.
     A es un entero que vale 20 - (5 + 3).
@@ -18,12 +26,4 @@ Principal es una funcion que devuelve es un entero:
     Fin.
 
     Incrementar A.
-Fin.
-
-SumaPrueba es una funcion que devuelve es un entero.
-Recibe: A es un entero, B es una cadena:
-
-    Incrementar A.
-    Devolver (A + 1).
-
 Fin.

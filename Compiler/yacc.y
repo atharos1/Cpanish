@@ -23,8 +23,8 @@
 %token principal recibe coma t_cadena t_entero asignar reasignar punto par_abrir par_cerrar suma resta mult divis mostrar si fin y o 
 igual mayor mayor_igual menor menor_igual distinto repetir_mientras incrementar decrementar es_funcion devuelve devolver
 %token<value> cadena entero var_id dos_puntos
-%type<node> PROGRAMA PRINCIPAL LISTA_PARAMETROS PARAMETROS PARAMETRO LINEA LINEAS INSTRUCCION DECLARACION ASIGNACION REASIGNACION TIPO EXPRESION 
-OPERACION FUNCION_BUILTIN MOSTRAR BLOQUE CONDICIONAL COMPARADOR EVALUACION REPETIR INCREMENTACION DECREMENTACION FUNCION FUNCIONES FIN DEVOLVER NEW_SCOPE
+%type<node> PROGRAMA PRINCIPAL LISTA_PARAMETROS PARAMETROS PARAMETRO LINEA LINEAS INSTRUCCION DECLARACION ASIGNACION REASIGNACION TIPO EXPRESION OPERACION 
+FUNCION_BUILTIN MOSTRAR BLOQUE CONDICIONAL COMPARADOR EVALUACION REPETIR INCREMENTACION DECREMENTACION FUNCION FUNCIONES FIN DEVOLVER NEW_SCOPE
 %start PROGRAMA
 
 /* Precedencia */
@@ -137,7 +137,7 @@ DECREMENTACION  : decrementar var_id                {   $$ = newNode(TYPE_EMPTY,
                                                         append($$, newNode(TYPE_LITERAL, "--")); }
                 ;
 
-DECLARACION     : var_id TIPO ASIGNACION            {   if (getType($1) != -1)
+DECLARACION     : var_id TIPO ASIGNACION            {   if (isInCurrentScope($1) == 1)
                                                             yyerror("Variable ya declarada previamente\n");
                                                         if (addVar($1, $2->type) == -1)
                                                             yyerror("Se superó el límite de variables\n");
@@ -159,7 +159,7 @@ ASIGNACION      :                                   {   $$ = NULL; }
 
 REASIGNACION    : var_id reasignar EXPRESION        {   int type = getType($1);
                                                         if (type == -1)
-                                                            yyerror("Variable no definida previamente\n");
+                                                            yyerror("Variable no declarada previamente\n");
                                                         if (type != $3->type)
                                                             yyerror("Asignación entre tipos incompatibles\n");
                                                         $$ = newNode(TYPE_EMPTY, NULL);
@@ -176,7 +176,7 @@ EXPRESION       : cadena                            {   $$ = newNode(TYPE_STRING
                 | entero                            {   $$ = newNode(TYPE_INT, $1); }
                 | var_id                            {   int type = getType($1);
                                                         if (type == -1)
-                                                            yyerror("Variable no definida previamente\n");
+                                                            yyerror("Variable no declarada previamente\n");
                                                         $$ = newNode(type, NULL);
                                                         append($$, newNode(TYPE_LITERAL, $1)); }
                 | par_abrir EXPRESION par_cerrar    {   if ($2->value != NULL) {

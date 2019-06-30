@@ -8,11 +8,12 @@ typedef enum operations {SUMA, RESTA, MULT, DIV} operation;
 typedef struct var {
     char * name;
     int type;
+    int scope;
 } var;
 
 var varTable[MAX_VAR];
 int varTableIndex = 0;
-
+int currScope = 0;
 int vars = 0;
 
 Node * intOperation(Node * n1, Node * n2, operation op);
@@ -191,12 +192,22 @@ int addVar(char * name, int type) {
         return -1;
     varTable[varTableIndex].name = name;
     varTable[varTableIndex].type = type;
+    varTable[varTableIndex].scope = currScope;
     varTableIndex++;
     return 1;
 }
 
+int isInCurrentScope(char * varName) {
+    for (int i = varTableIndex - 1; i >= 0 && varTable[i].scope == currScope; i--) {
+        if (strcmp(varName, varTable[i].name) == 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 int getType(char * varName) {
-    for (int i = 0; i < varTableIndex; i++) {
+    for (int i = varTableIndex - 1; i >= 0; i--) {
         if (strcmp(varName, varTable[i].name) == 0) {
             return varTable[i].type;
         }
@@ -205,9 +216,11 @@ int getType(char * varName) {
 }
 
 void openScope() {
-    printf("abri bloque\n");
+    currScope++;
 }
 
 void closeScope() {
-    printf("cerre bloque\n");
+    currScope--;
+    while(varTableIndex > 0 && varTable[varTableIndex - 1].scope != currScope)
+        varTableIndex--;
 }
