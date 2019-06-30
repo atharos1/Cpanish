@@ -24,5 +24,5 @@ El compilador que se presenta traduce el código a *C* por medio de *YACC* y *LE
 #### Instrucciones compilar un programa
 Al compilador debe proveérsele como primer argumento la ruta del archivo de código escrito en *Cpanish*. Si se verifica esta condición, se procesará el archivo y, de superarse las validaciones, se generará un archivo ejecutable de nombre *a.out*. 
 Adicionalmente, el compilador acepta, a continuación del nombre del archivo de entrada, los siguientes parámetros:
-- -p, -\-preserve: Evita que se elimine el archivo temporal en C
+- -p, -\-preserve: Evita que se elimine el archivo temporal en *C*
 - -o nombre, -\-output nombre: Modifica el nombre del archivo ejecutable de salida
