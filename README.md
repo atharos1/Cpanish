@@ -19,7 +19,7 @@ El compilador que se presenta traduce el código a *C* por medio de *YACC* y *LE
 2. Posicionarse dentro de la carpeta que contiene los archivos extraídos
 4. Ejecutar el comando:
 > $ make all
-5. Se genera el ejecutable *cspanish* en el directorio raíz del proyecto
+5. Se genera el ejecutable *cpanish* en el directorio raíz del proyecto
 
 #### Instrucciones compilar un programa
 Al compilador debe proveérsele como primer argumento la ruta del archivo de código escrito en *Cpanish*. Si se verifica esta condición, se procesará el archivo y, de superarse las validaciones, se generará un archivo ejecutable de nombre *a.out*. 

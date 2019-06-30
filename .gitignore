@@ -1,6 +1,6 @@
 Compiler/y.tab.c
 Compiler/y.tab.h
 Compiler/lex.yy.c
-cspanish
+cpanish
 .vscode/*
 *.out
