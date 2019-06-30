@@ -203,3 +203,11 @@ int getType(char * varName) {
     }
     return -1;
 }
+
+void openScope() {
+    printf("abri bloque\n");
+}
+
+void closeScope() {
+    printf("cerre bloque\n");
+}
