@@ -34,8 +34,9 @@ newline         [\n]
                                 }
 
 ","                 {return coma;}
-"es un entero"      {return t_entero;}
-"es una cadena"     {return t_cadena;}
+"un entero"      {return t_entero;}
+"una cadena"     {return t_cadena;}
+"es "            {return es;}
 "que vale"          {return asignar;}
 "ahora vale"        {return reasignar;}
 "Mostrar"           {return mostrar; }
