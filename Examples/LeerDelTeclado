@@ -2,7 +2,7 @@ Principal es una funcion que devuelve un entero:
     Mostrar "¡Bienvenido!\n".
 
     NOMBRE es una cadena que vale "".
-    LETRA es una cadena.
+    LETRA es una cadena que vale "l".
 
     NOMBRE ahora vale "".
 

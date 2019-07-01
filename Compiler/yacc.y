@@ -272,10 +272,8 @@ LEER_CHAR       : leer_en var_id                    {   int type = getType($2);
                                                             yyerror("Asignación entre tipos incompatibles\n");
     
                                                         $$ = newNode(TYPE_EMPTY, NULL);
-
-                                                        append($$, newNode(TYPE_LITERAL, "_getchar_to_var("));
                                                         append($$, newNode(TYPE_LITERAL, $2));
-                                                        append($$, newNode(TYPE_LITERAL, ")"));
+                                                        append($$, newNode(TYPE_LITERAL, " = _getchar_to_var()"));
     };
 
 CONDICIONAL     : si EVALUACION dos_puntos LINEAS FIN               {   $$ = newNode(TYPE_EMPTY, NULL); 

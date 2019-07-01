@@ -28,12 +28,12 @@ static char * strIntMultFunction = "char * _strintmult(char * str, int num) {\n"
                                     "\treturn newstr;\n"
                                     "}\n";
 
-static char * getCharToVar = "void _getchar_to_var(char * str) {\n"
-                                    "\tchar buff[2];\n"
-                                    "\tbuff[0] = getchar();\n"
-                                    "\tbuff[1] = 0;\n"
-                                    "\tstrcpy(str, buff);\n"
-                                    "}\n";                                    
+static char * getCharToVar = "char * _getchar_to_var() {\n"
+                                "\tchar * str = malloc(2);\n"
+                                "\tstr[0] = getchar();\n"
+                                "\tstr[1] = 0;\n"
+                                "\treturn str;\n"
+                                "}\n";                                    
 
 Node * addExpressions(Node * n1, Node * n2);
 Node * subtractExpressions(Node * n1, Node * n2);

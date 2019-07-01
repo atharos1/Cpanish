@@ -1,0 +1,32 @@
+/* 
+** En este ejemplo se pone a prueba el uso de scopes
+** mediante bloques anidados.
+*/
+
+/* Variables globales */
+Se definen las siguientes variables globales:
+
+J es un entero que vale 100.
+
+/* Prototipos */
+Se definen las siguientes funciones:
+
+ImprimirJ es una funcion que devuelve un entero.
+Recibe: un entero i.
+
+/* Funciones */
+Principal es una funcion que devuelve un entero:
+    I es una cadena que vale "Hola".
+    J es un entero que vale 20.
+    Si J es igual a 20:
+        I es un entero que vale 15.
+        Mostrar I + "\n".
+    Fin.
+    Mostrar I + "\n".
+    Mostrar (ImprimirJ evaluada en 0) + "\n".
+Fin.
+
+ImprimirJ es una funcion que devuelve un entero.
+Recibe: un entero i:
+    Devolver J + i.
+Fin.
