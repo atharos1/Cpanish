@@ -66,7 +66,7 @@ newline         [\n]
 "sea distinto a"        {return distinto;}
 "evaluada en"           {return evaluada_en;}
 "Se definen las siguientes funciones:"   {return prototipo_funciones;}
-"Se definen las siguientes variables:"   {return variables_globales;}
+"Se definen las siguientes variables globales:"   {return variables_globales;}
 "Repetir mientras"     {return repetir_mientras;}
 "Incrementar "         {return incrementar;}
 "Decrementar "         {return decrementar;}
@@ -75,6 +75,7 @@ newline         [\n]
 "Principal "           {return principal;}
 "Devolver "           {return devolver;}
 "Recibe"           {return recibe;}
+"Leer un caracter del teclado y guardarlo en "           {return leer_en;}
 
 -?{digit}+                      {   char * str = malloc(strlen(yytext)+1);
 			                        strcpy(str, yytext);

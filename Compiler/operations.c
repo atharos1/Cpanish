@@ -33,7 +33,7 @@ Node * addExpressions(Node * n1, Node * n2) {
             ret = newNode(TYPE_STRING, value);
         } else {
             ret = newNode(TYPE_STRING, NULL);
-            append(ret, newNode(TYPE_LITERAL, "strconcat("));
+            append(ret, newNode(TYPE_LITERAL, "_strconcat("));
             append(ret, n1);
             append(ret, newNode(TYPE_LITERAL, ", "));
             append(ret, n2);
@@ -63,7 +63,7 @@ Node * addExpressions(Node * n1, Node * n2) {
                 sort = ", -1)";
             }
             ret = newNode(TYPE_STRING, NULL);
-            append(ret, newNode(TYPE_LITERAL, "strintconcat("));
+            append(ret, newNode(TYPE_LITERAL, "_strintconcat("));
             append(ret, n1);
             append(ret, newNode(TYPE_LITERAL, ", "));
             append(ret, n2);
@@ -112,7 +112,7 @@ Node * multiplyExpressions(Node * n1, Node * n2) {
             ret = newNode(TYPE_STRING, value);
         } else {
             ret = newNode(TYPE_STRING, NULL);
-            append(ret, newNode(TYPE_LITERAL, "strintmult("));
+            append(ret, newNode(TYPE_LITERAL, "_strintmult("));
             append(ret, n1);
             append(ret, newNode(TYPE_LITERAL, ", "));
             append(ret, n2);
