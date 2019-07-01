@@ -22,8 +22,4 @@ void append(Node * parent, Node * node);
 
 void printInorder(Node * node);
 
-/* NO SE SI ESTO VA ACÁ */
-FILE * tmpFile;
-#define TMP_FILE_NAME ".comp_mid.tmp.c"
-
 #endif
