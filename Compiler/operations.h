@@ -25,6 +25,7 @@ static char * strIntMultFunction = "char * strintmult(char * str, int num) {\n"
                                     "\tnewstr[0] = 0;\n"
                                     "\tfor (int i = 0; i < num; i++)\n"
                                     "\t\tstrcpy(newstr + i * len, str);\n"
+                                    "\treturn newstr;\n"
                                     "}\n";
 
 Node * addExpressions(Node * n1, Node * n2);

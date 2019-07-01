@@ -12,7 +12,7 @@
 %x comment
 
 digit			[0-9]
-alpha			[a-zA-Z_]
+alpha			[a-zA-Z]
 space			[ \t]
 newline         [\n]
 
@@ -81,7 +81,7 @@ newline         [\n]
 			                        yylval.value = str;
 			                        return entero; }
 
-{alpha}({alpha}|{digit})*       {   char * str = malloc(strlen(yytext)+1);
+{alpha}({alpha}|{digit}|'_')*       {   char * str = malloc(strlen(yytext)+1);
 			                        strcpy(str,yytext);
 			                        yylval.value = str;
 			                        return var_id; }

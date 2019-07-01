@@ -23,7 +23,7 @@ devolver evaluada_en dos_puntos prototipo_funciones variables_globales
 %token<value> cadena entero var_id
 %type<node> PROGRAMA PRINCIPAL LISTA_PARAMETROS PARAMETROS PARAMETRO LINEA LINEAS INSTRUCCION DECLARACION ASIGNACION REASIGNACION 
 TIPO TIPO_F EXPRESION OPERACION FUNCION_BUILTIN MOSTRAR BLOQUE CONDICIONAL COMPARADOR EVALUACION REPETIR INCREMENTACION DECREMENTACION 
-FUNCION FUNCIONES FIN DEVOLVER NEW_SCOPE ARGUMENTOS EVALUAR_FUNC PROTOTIPO PROTOTIPOS LISTA_VAR LISTA_PROTO VARIABLE VARIABLES
+FUNCION FUNCIONES FIN DEVOLVER NUEVO_ALCANCE ARGUMENTOS EVALUAR_FUNC PROTOTIPO PROTOTIPOS LISTA_VAR LISTA_PROTO VARIABLE VARIABLES
 %start PROGRAMA
 
 /* Precedencia */
@@ -36,7 +36,7 @@ FUNCION FUNCIONES FIN DEVOLVER NEW_SCOPE ARGUMENTOS EVALUAR_FUNC PROTOTIPO PROTO
 /* Producciones */
 %%
 
-PROGRAMA        : LISTA_VAR LISTA_PROTO NEW_SCOPE PRINCIPAL FUNCIONES           {   $$ = newNode(TYPE_EMPTY, NULL);
+PROGRAMA        : LISTA_VAR LISTA_PROTO NUEVO_ALCANCE PRINCIPAL FUNCIONES       {   $$ = newNode(TYPE_EMPTY, NULL);
                                                                                     append($$, $1);
                                                                                     append($$, $2);
                                                                                     append($$, $4);
@@ -60,20 +60,23 @@ LISTA_PROTO     : prototipo_funciones PROTOTIPOS                {   $$ = $2; }
                 |                                               {   $$ = NULL; }
                 ;
 
-PROTOTIPOS      : PROTOTIPO punto PROTOTIPOS                    {   $$ = newNode(TYPE_EMPTY, NULL);
+PROTOTIPOS      : NUEVO_ALCANCE PROTOTIPO punto PROTOTIPOS      {   $$ = newNode(TYPE_EMPTY, NULL);
                                                                     append($$, $1);
                                                                     append($$, newNode(TYPE_LITERAL, ");\n"));
                                                                     append($$, $3); }
                 |                                               {   $$ = NULL; }
                 ;
 
-PROTOTIPO       : var_id es_funcion devuelve TIPO_F LISTA_PARAMETROS                {   if (addVar($1, $4->type) == -1)
+PROTOTIPO       : var_id es_funcion devuelve TIPO_F LISTA_PARAMETROS FIN_PARAMS         {   if (addVar($1, $4->type) == -1)
                                                                                             yyerror("Se superó el límite de variables\n");
                                                                                         $$ = newNode(TYPE_EMPTY, NULL);
                                                                                         append($$, $4);
                                                                                         append($$, newNode(TYPE_LITERAL, $1));
                                                                                         append($$, newNode(TYPE_LITERAL, "("));
                                                                                         append($$, $5); }
+
+FIN_PARAMS      :                                                                       {   closeScope(); }
+                ;
 
 VARIABLE        : REASIGNACION                      {   $$ = $1; }
                 | DECLARACION                       {   $$ = $1; }
@@ -96,7 +99,7 @@ FUNCION         : var_id es_funcion devuelve TIPO_F LISTA_PARAMETROS dos_puntos 
                                                                                                     append($$, newNode(TYPE_LITERAL, "}\n")); }
                 ;
 
-FUNCIONES       : NEW_SCOPE FUNCION FUNCIONES                   {   $$ = newNode(TYPE_EMPTY, NULL); 
+FUNCIONES       : NUEVO_ALCANCE FUNCION FUNCIONES               {   $$ = newNode(TYPE_EMPTY, NULL); 
                                                                     append($$, $2);
                                                                     append($$, $3); }
                 |                                               {   $$ = NULL; }
@@ -126,13 +129,13 @@ FIN             : fin punto                                     {   closeScope()
 LINEAS          : LINEA LINEAS                      {   $$ = newNode(TYPE_EMPTY, NULL);
                                                         append($$, $1);
                                                         append($$, $2); }
-                | NEW_SCOPE BLOQUE LINEAS           {   $$ = newNode(TYPE_EMPTY, NULL);
+                | NUEVO_ALCANCE BLOQUE LINEAS       {   $$ = newNode(TYPE_EMPTY, NULL);
                                                         append($$, $2);
                                                         append($$, $3); }
                 |                                   {   $$ = NULL; }
                 ;
 
-NEW_SCOPE       :                                   {   openScope(); }
+NUEVO_ALCANCE       :                               {   openScope(); }
                 ;
 
 LINEA           : INSTRUCCION punto                 {   $$ = newNode(TYPE_EMPTY, NULL);
