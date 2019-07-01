@@ -19,7 +19,6 @@ int vars = 0;
 Node * intOperation(Node * n1, Node * n2, operation op);
 extern void yyerror(char * s);
 
-
 Node * addExpressions(Node * n1, Node * n2) {
     Node * ret;
 

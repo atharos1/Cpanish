@@ -20,11 +20,12 @@
 }
 
 /* Tokens */
-%token principal recibe coma es t_cadena t_entero asignar reasignar punto par_abrir par_cerrar suma resta mult divis mostrar si fin y o 
-igual mayor mayor_igual menor menor_igual distinto repetir_mientras incrementar decrementar es_funcion devuelve devolver
-%token<value> cadena entero var_id dos_puntos
-%type<node> PROGRAMA PRINCIPAL LISTA_PARAMETROS PARAMETROS PARAMETRO LINEA LINEAS INSTRUCCION DECLARACION ASIGNACION REASIGNACION TIPO TIPO_F EXPRESION 
-OPERACION FUNCION_BUILTIN MOSTRAR BLOQUE CONDICIONAL COMPARADOR EVALUACION REPETIR INCREMENTACION DECREMENTACION FUNCION FUNCIONES FIN DEVOLVER NEW_SCOPE
+%token principal recibe coma es t_cadena t_entero asignar reasignar punto par_abrir par_cerrar suma resta mult divis mostrar si fin y o protot
+igual mayor mayor_igual menor menor_igual distinto repetir_mientras incrementar decrementar es_funcion devuelve devolver evaluada_en dos_puntos
+%token<value> cadena entero var_id
+%type<node> PROGRAMA PRINCIPAL LISTA_PARAMETROS PARAMETROS PARAMETRO LINEA LINEAS INSTRUCCION DECLARACION ASIGNACION REASIGNACION 
+TIPO TIPO_F EXPRESION OPERACION FUNCION_BUILTIN MOSTRAR BLOQUE CONDICIONAL COMPARADOR EVALUACION REPETIR INCREMENTACION DECREMENTACION 
+FUNCION FUNCIONES FIN DEVOLVER NEW_SCOPE ARGUMENTOS EVALUAR_FUNC PROTOTIPO PROTOTIPOS
 %start PROGRAMA
 
 /* Precedencia */
@@ -35,15 +36,28 @@ OPERACION FUNCION_BUILTIN MOSTRAR BLOQUE CONDICIONAL COMPARADOR EVALUACION REPET
 %left o
 
 /* Producciones */
-/* TODO: ELIMINAR REDUNDANCIAS CON TRANSICIONES LAMBDA, AGREGAR VARIABLES GLOBALES, VER TEMA PROTOTIPOS */
 %%
 
-PROGRAMA        : FUNCIONES NEW_SCOPE PRINCIPAL                 {   $$ = newNode(TYPE_EMPTY, NULL);
+PROGRAMA        : PROTOTIPOS NEW_SCOPE PRINCIPAL FUNCIONES      {   $$ = newNode(TYPE_EMPTY, NULL);
                                                                     append($$, $1);
                                                                     append($$, $3);
+                                                                    append($$, $4);
                                                                     printHeaders();
                                                                     printInorder($$); }
                 ;
+
+PROTOTIPOS      : PROTOTIPO PROTOTIPOS                          {   $$ = newNode(TYPE_EMPTY, NULL);
+                                                                    append($$, $1);
+                                                                    append($$, $2); }
+                |                                               {   $$ = NULL; }
+                ;
+
+PROTOTIPO       : var_id es_funcion devuelve TIPO_F LISTA_PARAMETROS punto          {   $$ = newNode(TYPE_EMPTY, NULL);
+                                                                                        append($$, $4);
+                                                                                        append($$, newNode(TYPE_LITERAL, $1));
+                                                                                        append($$, newNode(TYPE_LITERAL, "("));
+                                                                                        append($$, $5);
+                                                                                        append($$, newNode(TYPE_LITERAL, ");\n")); }
 
 PRINCIPAL       : principal es_funcion devuelve TIPO_F dos_puntos LINEAS FIN        {   $$ = newNode(TYPE_EMPTY, NULL);
                                                                                         append($$, $4);
@@ -60,12 +74,6 @@ FUNCION         : var_id es_funcion devuelve TIPO_F LISTA_PARAMETROS dos_puntos 
                                                                                                     append($$, newNode(TYPE_LITERAL, ") {\n"));
                                                                                                     append($$, $7);
                                                                                                     append($$, newNode(TYPE_LITERAL, "}\n")); }
-                | var_id es_funcion devuelve TIPO_F dos_puntos FIN                      {   $$ = newNode(TYPE_EMPTY, NULL);
-                                                                                            append($$, $4);
-                                                                                            append($$, newNode(TYPE_LITERAL, $1));
-                                                                                            append($$, newNode(TYPE_LITERAL, "() {\n"));
-                                                                                            append($$, $6);
-                                                                                            append($$, newNode(TYPE_LITERAL, "}\n")); }
                 ;
 
 FUNCIONES       : NEW_SCOPE FUNCION FUNCIONES                   {   $$ = newNode(TYPE_EMPTY, NULL); 
@@ -74,24 +82,25 @@ FUNCIONES       : NEW_SCOPE FUNCION FUNCIONES                   {   $$ = newNode
                 |                                               {   $$ = NULL; }
                 ;
 
-LISTA_PARAMETROS : punto recibe dos_puntos PARAMETROS                     {   $$ = $4; }
+LISTA_PARAMETROS : punto recibe dos_puntos PARAMETROS           {   $$ = $4; }
+                 |                                              {   $$ = NULL; }
                  ;
 
-PARAMETROS      : PARAMETRO coma PARAMETRO                          {   $$ = newNode(TYPE_EMPTY, NULL);
-                                                                        append($$, $1);
-                                                                        append($$, newNode(TYPE_LITERAL, ", "));
-                                                                        append($$, $3); }
-                | PARAMETRO                                         {   $$ = $1; }
+PARAMETROS      : PARAMETRO coma PARAMETROS                     {   $$ = newNode(TYPE_EMPTY, NULL);
+                                                                    append($$, $1);
+                                                                    append($$, newNode(TYPE_LITERAL, ", "));
+                                                                    append($$, $3); }
+                | PARAMETRO                                     {   $$ = $1; }
                 ;
 
-PARAMETRO       : TIPO_F var_id                                         {   if (addVar($2, $1->type) == -1)
-                                                                                yyerror("Se superó el límite de variables\n");
-                                                                            $$ = newNode(TYPE_EMPTY, NULL);
-                                                                            append($$, $1);
-                                                                            append($$, newNode(TYPE_LITERAL, $2)); }
+PARAMETRO       : TIPO_F var_id                                 {   if (addVar($2, $1->type) == -1)
+                                                                        yyerror("Se superó el límite de variables\n");
+                                                                    $$ = newNode(TYPE_EMPTY, NULL);
+                                                                    append($$, $1);
+                                                                    append($$, newNode(TYPE_LITERAL, $2)); }
                 ;
 
-FIN             : fin punto                                         {   closeScope(); }
+FIN             : fin punto                                     {   closeScope(); }
                 ;
 
 LINEAS          : LINEA LINEAS                      {   $$ = newNode(TYPE_EMPTY, NULL);
@@ -121,6 +130,7 @@ INSTRUCCION     : REASIGNACION                      {   $$ = $1; }
                 | INCREMENTACION                    {   $$ = $1; }
                 | DECREMENTACION                    {   $$ = $1; }
                 | DEVOLVER                          {   $$ = $1; }
+                | EXPRESION                         {   $$ = $1; }
                 ;
 
 
@@ -193,12 +203,27 @@ EXPRESION       : cadena                            {   $$ = newNode(TYPE_STRING
                                                             append($$, newNode(TYPE_LITERAL, ")")); 
                                                         } }
                 | OPERACION                         {   $$ = $1; }
+                | EVALUAR_FUNC                      {   $$ = $1; }
                 ;
 
 OPERACION       : EXPRESION suma EXPRESION          {   $$ = addExpressions($1, $3); }
                 | EXPRESION resta EXPRESION         {   $$ = subtractExpressions($1, $3); }
                 | EXPRESION mult EXPRESION          {   $$ = multiplyExpressions($1, $3); }
                 | EXPRESION divis EXPRESION         {   $$ = divideExpressions($1, $3); }
+                ;
+
+EVALUAR_FUNC    : var_id evaluada_en ARGUMENTOS     {   $$ = newNode(TYPE_EMPTY, NULL);
+                                                        append($$, newNode(TYPE_LITERAL, $1));
+                                                        append($$, newNode(TYPE_LITERAL, "("));
+                                                        append($$, $3);
+                                                        append($$, newNode(TYPE_LITERAL, ")"));
+                                                    }
+
+ARGUMENTOS      : var_id coma ARGUMENTOS            {   $$ = newNode(TYPE_EMPTY, NULL);
+                                                        append($$, newNode(TYPE_LITERAL, $1));
+                                                        append($$, newNode(TYPE_LITERAL, ", "));
+                                                        append($$, $3); }
+                | var_id                            {   $$ = newNode(TYPE_LITERAL, $1); }
                 ;
 
 FUNCION_BUILTIN : MOSTRAR                           {   $$ = $1; }
@@ -213,22 +238,22 @@ MOSTRAR         : mostrar EXPRESION                 {   $$ = newNode(TYPE_EMPTY,
                                                         append($$, newNode(TYPE_LITERAL, ")")); }
                 ;
 
-CONDICIONAL     : si EVALUACION dos_puntos LINEAS FIN                    {   $$ = newNode(TYPE_EMPTY, NULL); 
-                                                                            append($$, newNode(TYPE_LITERAL, "if(")); 
-                                                                            append($$, $2); 
-                                                                            append($$, newNode(TYPE_LITERAL, ")"));
-                                                                            append($$, newNode(TYPE_LITERAL, "{\n"));
-                                                                            append($$, $4); 
-                                                                            append($$, newNode(TYPE_LITERAL, "}\n")); }
+CONDICIONAL     : si EVALUACION dos_puntos LINEAS FIN               {   $$ = newNode(TYPE_EMPTY, NULL); 
+                                                                        append($$, newNode(TYPE_LITERAL, "if(")); 
+                                                                        append($$, $2); 
+                                                                        append($$, newNode(TYPE_LITERAL, ")"));
+                                                                        append($$, newNode(TYPE_LITERAL, "{\n"));
+                                                                        append($$, $4); 
+                                                                        append($$, newNode(TYPE_LITERAL, "}\n")); }
                 ;
 
-REPETIR         : repetir_mientras EVALUACION dos_puntos LINEAS FIN       {   $$ = newNode(TYPE_EMPTY, NULL); 
-                                                                            append($$, newNode(TYPE_LITERAL, "while(")); 
-                                                                            append($$, $2); 
-                                                                            append($$, newNode(TYPE_LITERAL, ")"));
-                                                                            append($$, newNode(TYPE_LITERAL, "{\n"));
-                                                                            append($$, $4); 
-                                                                            append($$, newNode(TYPE_LITERAL, "}\n")); }
+REPETIR         : repetir_mientras EVALUACION dos_puntos LINEAS FIN {   $$ = newNode(TYPE_EMPTY, NULL); 
+                                                                        append($$, newNode(TYPE_LITERAL, "while(")); 
+                                                                        append($$, $2); 
+                                                                        append($$, newNode(TYPE_LITERAL, ")"));
+                                                                        append($$, newNode(TYPE_LITERAL, "{\n"));
+                                                                        append($$, $4); 
+                                                                        append($$, newNode(TYPE_LITERAL, "}\n")); }
                 ;
 
 EVALUACION      : EXPRESION COMPARADOR EXPRESION                    {   $$ = newNode(TYPE_EMPTY, NULL);

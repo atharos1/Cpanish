@@ -12,7 +12,7 @@
 %x comment
 
 digit			[0-9]
-alpha			[a-zA-Z_-]
+alpha			[a-zA-Z_]
 space			[ \t]
 newline         [\n]
 
@@ -64,6 +64,8 @@ newline         [\n]
 "sea menor a"           {return menor;}
 "sea menor o igual a"   {return menor_igual;}
 "sea distinto a"        {return distinto;}
+"evaluada en"           {return evaluada_en;}
+"Las funciones seran"   {return protot;}
 "Repetir mientras"     {return repetir_mientras;}
 "Incrementar "         {return incrementar;}
 "Decrementar "         {return decrementar;}
@@ -78,7 +80,7 @@ newline         [\n]
 			                        yylval.value = str;
 			                        return entero; }
 
-{alpha}({alpha}|{digit}|'_')*       {   char * str = malloc(strlen(yytext)+1);
+{alpha}({alpha}|{digit})*       {   char * str = malloc(strlen(yytext)+1);
 			                        strcpy(str,yytext);
 			                        yylval.value = str;
 			                        return var_id; }
