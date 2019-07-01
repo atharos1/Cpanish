@@ -1,0 +1,30 @@
+/* 
+** En este ejemplo se puede observar que la variable var1
+** resuelve su valor en compilación, mientras que la variable
+** var2 lo hará en ejecución.
+**
+** Para observar esto se puede ejecutar el compilador con el flag -p
+** que mantiene una copia del código C intermedio bajo el nombre de
+** ".comp_mid.tmp.c".
+**
+** También se pueden apreciar las precedencias entre operadores.
+*/
+
+Principal es una funcion que devuelve un entero:
+    prueba es una cadena que vale "Prueba".
+
+    Mostrar "Var1:\n".
+    var1 es una cadena que vale (2 * (12 - 10)) * "Prueba\n".
+    Mostrar var1.
+
+    Mostrar "Var2:\n".
+    var2 es una cadena que vale (prueba + "\n") * (2 * (12 - 10)).
+    Mostrar var2.
+    
+    Mostrar "Var3:\n".
+    var3 es un entero que vale 0.
+    Repetir mientras var3 sea menor a 4:
+        Mostrar "Prueba\n".
+        Incrementar var3.
+    Fin.
+Fin.
