@@ -61,9 +61,9 @@ LISTA_PROTO     : prototipo_funciones PROTOTIPOS                {   $$ = $2; }
                 ;
 
 PROTOTIPOS      : NUEVO_ALCANCE PROTOTIPO punto PROTOTIPOS      {   $$ = newNode(TYPE_EMPTY, NULL);
-                                                                    append($$, $1);
+                                                                    append($$, $2);
                                                                     append($$, newNode(TYPE_LITERAL, ");\n"));
-                                                                    append($$, $3); }
+                                                                    append($$, $4); }
                 |                                               {   $$ = NULL; }
                 ;
 

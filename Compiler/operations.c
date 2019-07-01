@@ -220,6 +220,6 @@ void openScope() {
 
 void closeScope() {
     currScope--;
-    while(varTableIndex > 0 && varTable[varTableIndex - 1].scope != currScope)
+    while(varTableIndex > 0 && varTable[varTableIndex - 1].scope > currScope)
         varTableIndex--;
 }

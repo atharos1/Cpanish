@@ -1,4 +1,4 @@
-Se definen las siguientes variables:
+Se definen las siguientes variables globales:
 
 M es un entero que vale 4.
 
@@ -28,7 +28,7 @@ Factorial es una funcion que devuelve un entero.
 Recibe: un entero k:
     A es un entero que vale 2.
     R es un entero que vale 1.
-    Repetir mientras A sea menor o igual a m:
+    Repetir mientras A sea menor o igual a k:
         R ahora vale R * A.
         Incrementar A.
     Fin.
