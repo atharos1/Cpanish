@@ -1,0 +1,25 @@
+Principal es una funcion que devuelve un entero:
+    Mostrar "¡Bienvenido!\n".
+
+    NOMBRE es una cadena que vale "".
+    LETRA es una cadena.
+
+    NOMBRE ahora vale "".
+
+    Mostrar "¿Cual es su nombre?: ".
+
+    Leer un caracter del teclado y guardarlo en LETRA.
+
+    Repetir mientras LETRA sea distinto a "\n":
+        NOMBRE ahora vale NOMBRE + LETRA.
+        Leer un caracter del teclado y guardarlo en LETRA.
+    Fin.
+
+    Si NOMBRE es igual a "":
+        NOMBRE ahora vale "Jorge".
+    Fin.
+
+    Mostrar "\nTengo globos " + NOMBRE + ", globos que flotan por arte de magia...\n\n".
+
+    Mostrar "¡Adios, " + NOMBRE + "!\n".
+Fin.

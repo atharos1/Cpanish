@@ -275,7 +275,7 @@ LEER_CHAR       : leer_en var_id                    {   int type = getType($2);
 
                                                         append($$, newNode(TYPE_LITERAL, "_getchar_to_var("));
                                                         append($$, newNode(TYPE_LITERAL, $2));
-                                                        append($$, newNode(TYPE_LITERAL, ");\n"));
+                                                        append($$, newNode(TYPE_LITERAL, ")"));
     };
 
 CONDICIONAL     : si EVALUACION dos_puntos LINEAS FIN               {   $$ = newNode(TYPE_EMPTY, NULL); 
