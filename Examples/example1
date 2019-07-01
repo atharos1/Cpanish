@@ -1,16 +1,24 @@
-SumaPrueba es una funcion que devuelve un entero.
-Recibe: un entero A, una cadena B.
+Se definen las siguientes funciones:
+    SumaPrueba es una funcion que devuelve un entero.
+    Recibe: un entero A, una cadena B.
 
 Principal es una funcion que devuelve un entero:
     hola_mundo_a es una cadena.
     A es un entero que vale 20 - (5 + 3).
     B es una cadena que vale "asd".
-    A ahora vale -10.
+    A ahora vale 50.
     B ahora vale B + B.
     Mostrar "Hola" + "Chau".
+    Mostrar "\n".
 
-    Si B es distinto a "asd" y A es mayor o igual a 15:
-        A ahora vale 11.
+    Leer un caracter del teclado y guardarlo en B.
+
+    Mostrar "B vale: " + B.
+
+    Mostrar "\n".
+
+    Si B es igual a "a" y A es mayor o igual a 15:
+        A ahora vale 3.
         Mostrar "Yay!".
     Fin.
 

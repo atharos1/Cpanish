@@ -3,14 +3,14 @@
 
 #include "node.h"
 
-static char * strCatFunction = "char * strconcat(char * str1, char * str2) {\n"
+static char * strCatFunction = "char * _strconcat(char * str1, char * str2) {\n"
                                 "\tchar * newstr = malloc(strlen(str1) + strlen(str2) + 1);\n"
                                 "\tstrcpy(newstr, str1);\n"
                                 "\tstrcat(newstr, str2);\n"
                                 "\treturn newstr;\n"
                             "}\n";
     
-static char * strIntCatFunction = "char * strintconcat(char * str, int num, int sort) {\n"
+static char * strIntCatFunction = "char * _strintconcat(char * str, int num, int sort) {\n"
                                 "\tchar * newstr = malloc(strlen(str) + 20);\n"
                                 "\tif (sort > 0)\n"
                                 "\t\tsprintf(newstr, \"%s%d\", str, num);\n"
@@ -19,13 +19,20 @@ static char * strIntCatFunction = "char * strintconcat(char * str, int num, int 
                                 "\treturn newstr;\n"
                             "}\n";
 
-static char * strIntMultFunction = "char * strintmult(char * str, int num) {\n"
+static char * strIntMultFunction = "char * _strintmult(char * str, int num) {\n"
                                     "\tint len = strlen(str);\n"
                                     "\tchar * newstr = malloc(len * num + 1);\n"
                                     "\tnewstr[0] = 0;\n"
                                     "\tfor (int i = 0; i < num; i++)\n"
                                     "\t\tstrcpy(newstr + i * len, str);\n"
                                     "}\n";
+
+static char * getCharToVar = "void _getchar_to_var(char * str) {\n"
+                                    "\tchar buff[2];\n"
+                                    "\tbuff[0] = getchar();\n"
+                                    "\tbuff[1] = 0;\n"
+                                    "\tstrcpy(str, buff);\n"
+                                    "}\n";                                    
 
 Node * addExpressions(Node * n1, Node * n2);
 Node * subtractExpressions(Node * n1, Node * n2);

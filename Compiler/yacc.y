@@ -19,11 +19,11 @@
 /* Tokens */
 %token principal recibe coma es t_cadena t_entero asignar reasignar punto par_abrir par_cerrar suma resta mult divis mostrar 
 si fin y o protot igual mayor mayor_igual menor menor_igual distinto repetir_mientras incrementar decrementar es_funcion devuelve 
-devolver evaluada_en dos_puntos prototipo_funciones variables_globales
+devolver evaluada_en dos_puntos prototipo_funciones variables_globales leer_en
 %token<value> cadena entero var_id
 %type<node> PROGRAMA PRINCIPAL LISTA_PARAMETROS PARAMETROS PARAMETRO LINEA LINEAS INSTRUCCION DECLARACION ASIGNACION REASIGNACION 
 TIPO TIPO_F EXPRESION OPERACION FUNCION_BUILTIN MOSTRAR BLOQUE CONDICIONAL COMPARADOR EVALUACION REPETIR INCREMENTACION DECREMENTACION 
-FUNCION FUNCIONES FIN DEVOLVER NEW_SCOPE ARGUMENTOS EVALUAR_FUNC PROTOTIPO PROTOTIPOS LISTA_VAR LISTA_PROTO VARIABLE VARIABLES
+FUNCION FUNCIONES FIN DEVOLVER NEW_SCOPE ARGUMENTOS EVALUAR_FUNC PROTOTIPO PROTOTIPOS LISTA_VAR LISTA_PROTO VARIABLE VARIABLES LEER_CHAR
 %start PROGRAMA
 
 /* Precedencia */
@@ -250,6 +250,7 @@ ARGUMENTOS      : EXPRESION coma ARGUMENTOS         {   $$ = newNode(TYPE_EMPTY,
                 ;
 
 FUNCION_BUILTIN : MOSTRAR                           {   $$ = $1; }
+                | LEER_CHAR                         {   $$ = $1; }
                 ;
 
 MOSTRAR         : mostrar EXPRESION                 {   $$ = newNode(TYPE_EMPTY, NULL);
@@ -260,6 +261,19 @@ MOSTRAR         : mostrar EXPRESION                 {   $$ = newNode(TYPE_EMPTY,
                                                         append($$, $2); 
                                                         append($$, newNode(TYPE_LITERAL, ")")); }
                 ;
+
+LEER_CHAR       : leer_en var_id                    {   int type = getType($2);
+                                                        if (type == -1)
+                                                            yyerror("Variable no declarada previamente\n");
+                                                        if (type != TYPE_STRING)
+                                                            yyerror("Asignación entre tipos incompatibles\n");
+    
+                                                        $$ = newNode(TYPE_EMPTY, NULL);
+
+                                                        append($$, newNode(TYPE_LITERAL, "_getchar_to_var("));
+                                                        append($$, newNode(TYPE_LITERAL, $2));
+                                                        append($$, newNode(TYPE_LITERAL, ");\n"));
+    };
 
 CONDICIONAL     : si EVALUACION dos_puntos LINEAS FIN               {   $$ = newNode(TYPE_EMPTY, NULL); 
                                                                         append($$, newNode(TYPE_LITERAL, "if(")); 
@@ -341,4 +355,5 @@ void printHeaders() {
     fprintf(tmpFile, "%s" , strCatFunction);
     fprintf(tmpFile, "%s" , strIntCatFunction);
     fprintf(tmpFile, "%s" , strIntMultFunction);
+    fprintf(tmpFile, "%s" , getCharToVar);
 }
