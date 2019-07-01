@@ -17,12 +17,13 @@
 }
 
 /* Tokens */
-%token principal recibe coma es t_cadena t_entero asignar reasignar punto par_abrir par_cerrar suma resta mult divis mostrar si fin y o protot
-igual mayor mayor_igual menor menor_igual distinto repetir_mientras incrementar decrementar es_funcion devuelve devolver evaluada_en dos_puntos
+%token principal recibe coma es t_cadena t_entero asignar reasignar punto par_abrir par_cerrar suma resta mult divis mostrar 
+si fin y o protot igual mayor mayor_igual menor menor_igual distinto repetir_mientras incrementar decrementar es_funcion devuelve 
+devolver evaluada_en dos_puntos prototipo_funciones variables_globales
 %token<value> cadena entero var_id
 %type<node> PROGRAMA PRINCIPAL LISTA_PARAMETROS PARAMETROS PARAMETRO LINEA LINEAS INSTRUCCION DECLARACION ASIGNACION REASIGNACION 
 TIPO TIPO_F EXPRESION OPERACION FUNCION_BUILTIN MOSTRAR BLOQUE CONDICIONAL COMPARADOR EVALUACION REPETIR INCREMENTACION DECREMENTACION 
-FUNCION FUNCIONES FIN DEVOLVER NEW_SCOPE ARGUMENTOS EVALUAR_FUNC PROTOTIPO PROTOTIPOS
+FUNCION FUNCIONES FIN DEVOLVER NEW_SCOPE ARGUMENTOS EVALUAR_FUNC PROTOTIPO PROTOTIPOS LISTA_VAR LISTA_PROTO VARIABLE VARIABLES
 %start PROGRAMA
 
 /* Precedencia */
@@ -35,26 +36,48 @@ FUNCION FUNCIONES FIN DEVOLVER NEW_SCOPE ARGUMENTOS EVALUAR_FUNC PROTOTIPO PROTO
 /* Producciones */
 %%
 
-PROGRAMA        : PROTOTIPOS NEW_SCOPE PRINCIPAL FUNCIONES      {   $$ = newNode(TYPE_EMPTY, NULL);
-                                                                    append($$, $1);
-                                                                    append($$, $3);
-                                                                    append($$, $4);
-                                                                    printHeaders();
-                                                                    printInorder($$); }
+PROGRAMA        : LISTA_VAR LISTA_PROTO NEW_SCOPE PRINCIPAL FUNCIONES           {   $$ = newNode(TYPE_EMPTY, NULL);
+                                                                                    append($$, $1);
+                                                                                    append($$, $2);
+                                                                                    append($$, $4);
+                                                                                    append($$, $5);
+                                                                                    printHeaders();
+                                                                                    printInorder($$); }
                 ;
 
-PROTOTIPOS      : PROTOTIPO PROTOTIPOS                          {   $$ = newNode(TYPE_EMPTY, NULL);
-                                                                    append($$, $1);
-                                                                    append($$, $2); }
+LISTA_VAR       : variables_globales VARIABLES                              {   $$ = $2; }
+                |                                                           {   $$ = NULL; }
+                ;
+
+VARIABLES       : VARIABLE punto VARIABLES                                          {   $$ = newNode(TYPE_EMPTY, NULL);
+                                                                                        append($$, $1);
+                                                                                        append($$, newNode(TYPE_LITERAL, ";\n"));
+                                                                                        append($$, $3); }
+                |                                                                   {   $$ = NULL; }
+                ;
+
+LISTA_PROTO     : prototipo_funciones PROTOTIPOS                {   $$ = $2; }
                 |                                               {   $$ = NULL; }
                 ;
 
-PROTOTIPO       : var_id es_funcion devuelve TIPO_F LISTA_PARAMETROS punto          {   $$ = newNode(TYPE_EMPTY, NULL);
+PROTOTIPOS      : PROTOTIPO punto PROTOTIPOS                    {   $$ = newNode(TYPE_EMPTY, NULL);
+                                                                    append($$, $1);
+                                                                    append($$, newNode(TYPE_LITERAL, ");\n"));
+                                                                    append($$, $3); }
+                |                                               {   $$ = NULL; }
+                ;
+
+PROTOTIPO       : var_id es_funcion devuelve TIPO_F LISTA_PARAMETROS                {   if (addVar($1, $4->type) == -1)
+                                                                                            yyerror("Se superó el límite de variables\n");
+                                                                                        $$ = newNode(TYPE_EMPTY, NULL);
                                                                                         append($$, $4);
                                                                                         append($$, newNode(TYPE_LITERAL, $1));
                                                                                         append($$, newNode(TYPE_LITERAL, "("));
-                                                                                        append($$, $5);
-                                                                                        append($$, newNode(TYPE_LITERAL, ");\n")); }
+                                                                                        append($$, $5); }
+
+VARIABLE        : REASIGNACION                      {   $$ = $1; }
+                | DECLARACION                       {   $$ = $1; }
+                ;
 
 PRINCIPAL       : principal es_funcion devuelve TIPO_F dos_puntos LINEAS FIN        {   $$ = newNode(TYPE_EMPTY, NULL);
                                                                                         append($$, $4);
@@ -167,7 +190,7 @@ ASIGNACION      :                                   {   $$ = NULL; }
 
 REASIGNACION    : var_id reasignar EXPRESION        {   int type = getType($1);
                                                         if (type == -1)
-                                                            yyerror("Variable no declarada previamente\n");
+                                                            yyerror("Variable o funcion no declarada previamente\n");
                                                         if (type != $3->type)
                                                             yyerror("Asignación entre tipos incompatibles\n");
                                                         $$ = newNode(TYPE_EMPTY, NULL);
@@ -188,7 +211,7 @@ EXPRESION       : cadena                            {   $$ = newNode(TYPE_STRING
                 | entero                            {   $$ = newNode(TYPE_INT, $1); }
                 | var_id                            {   int type = getType($1);
                                                         if (type == -1)
-                                                            yyerror("Variable no declarada previamente\n");
+                                                            yyerror("Variable o funcion no declarada previamente\n");
                                                         $$ = newNode(type, NULL);
                                                         append($$, newNode(TYPE_LITERAL, $1)); }
                 | par_abrir EXPRESION par_cerrar    {   if ($2->value != NULL) {
@@ -209,18 +232,21 @@ OPERACION       : EXPRESION suma EXPRESION          {   $$ = addExpressions($1, 
                 | EXPRESION divis EXPRESION         {   $$ = divideExpressions($1, $3); }
                 ;
 
-EVALUAR_FUNC    : var_id evaluada_en ARGUMENTOS     {   $$ = newNode(TYPE_EMPTY, NULL);
+EVALUAR_FUNC    : var_id evaluada_en ARGUMENTOS     {   int type = getType($1);
+                                                        if (type == -1)
+                                                            yyerror("Funcion no declarada previamente\n");
+                                                        $$ = newNode(type, NULL);
                                                         append($$, newNode(TYPE_LITERAL, $1));
                                                         append($$, newNode(TYPE_LITERAL, "("));
                                                         append($$, $3);
                                                         append($$, newNode(TYPE_LITERAL, ")"));
                                                     }
 
-ARGUMENTOS      : var_id coma ARGUMENTOS            {   $$ = newNode(TYPE_EMPTY, NULL);
-                                                        append($$, newNode(TYPE_LITERAL, $1));
+ARGUMENTOS      : EXPRESION coma ARGUMENTOS         {   $$ = newNode(TYPE_EMPTY, NULL);
+                                                        append($$, $1);
                                                         append($$, newNode(TYPE_LITERAL, ", "));
                                                         append($$, $3); }
-                | var_id                            {   $$ = newNode(TYPE_LITERAL, $1); }
+                | EXPRESION                         {   $$ = $1; }
                 ;
 
 FUNCION_BUILTIN : MOSTRAR                           {   $$ = $1; }

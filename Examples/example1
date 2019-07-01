@@ -15,7 +15,7 @@ Principal es una funcion que devuelve un entero:
     Fin.
 
     /* Tendría que ser "Repetir mientras A SEA mayor a 0:" */
-    Repetir mientras A es mayor a 0:
+    Repetir mientras A sea mayor a 0:
         Decrementar A.
         Mostrar "Decrementando".
     Fin.

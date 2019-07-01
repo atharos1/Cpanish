@@ -1,7 +1,8 @@
 Principal es una funcion que devuelve un entero:
-    A es un entero.
-    Si A es igual a 5:
-        A es una cadena.
+    A es un entero que vale 6.
+    B es una cadena que vale "Chau".
+    Si A es igual a 6:
+        A es una cadena que vale B + B.
         Mostrar A.
     Fin.
     Mostrar A.

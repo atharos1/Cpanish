@@ -100,6 +100,6 @@ int main(int argc, char *argv[]) {
 
     freeResources();
 
-    //compileC(op.output, op.preserve);
+    compileC(op.output, op.preserve);
     return 0;
 }

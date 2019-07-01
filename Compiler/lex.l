@@ -65,7 +65,8 @@ newline         [\n]
 "sea menor o igual a"   {return menor_igual;}
 "sea distinto a"        {return distinto;}
 "evaluada en"           {return evaluada_en;}
-"Las funciones seran"   {return protot;}
+"Se definen las siguientes funciones:"   {return prototipo_funciones;}
+"Se definen las siguientes variables:"   {return variables_globales;}
 "Repetir mientras"     {return repetir_mientras;}
 "Incrementar "         {return incrementar;}
 "Decrementar "         {return decrementar;}

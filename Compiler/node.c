@@ -1,4 +1,7 @@
 #include "node.h"
+#include "compiler.h"
+
+extern FILE * tmpFile;
 
 Node * newNode(type type, char * value)
 {
@@ -31,7 +34,7 @@ void append(Node * parent, Node * node) {
 
 void printInorder(Node * node) {
     if (node->type != TYPE_EMPTY && node->value != NULL)
-        fprintf(stdout, "%s", node->value);
+        fprintf(tmpFile, "%s", node->value);
     else {
         Node * aux = node->leftChild;
         while(aux != NULL) {

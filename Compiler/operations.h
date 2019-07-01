@@ -13,9 +13,9 @@ static char * strCatFunction = "char * strconcat(char * str1, char * str2) {\n"
 static char * strIntCatFunction = "char * strintconcat(char * str, int num, int sort) {\n"
                                 "\tchar * newstr = malloc(strlen(str) + 20);\n"
                                 "\tif (sort > 0)\n"
-                                "\t\tfprintf(\"%s%d\", str, num);\n"
+                                "\t\tsprintf(newstr, \"%s%d\", str, num);\n"
                                 "\telse\n"
-                                "\t\tfprintf(\"%d%s\", num, str);\n"
+                                "\t\tsprintf(newstr, \"%d%s\", num, str);\n"
                                 "\treturn newstr;\n"
                             "}\n";
 

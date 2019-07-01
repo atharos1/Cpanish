@@ -1,0 +1,42 @@
+Se definen las siguientes variables:
+
+M es un entero que vale 5.
+
+Se definen las siguientes funciones:
+
+Factorial es una funcion que devuelve un entero.
+Recibe: un entero k.
+
+Combinatorio es una funcion que devuelve un entero.
+Recibe: un entero m, un entero n.
+
+Principal es una funcion que devuelve un entero:
+    I es un entero que vale 0.
+    Repetir mientras I sea menor o igual a M:
+        Izq es una cadena que vale " " * (M - I).
+        Der es una cadena que vale " " * (M - I).
+        J es un entero que vale 0.
+        Repetir mientras J sea menor o igual a I:
+            Izq ahora vale Izq + (Combinatorio evaluada en I, J) + " ".
+        Fin.
+        Mostrar Izq.
+    Fin.
+Fin.
+
+Factorial es una funcion que devuelve un entero.
+Recibe: un entero k:
+    A es un entero que vale 2.
+    R es un entero que vale 1.
+    Repetir mientras A sea menor o igual a M:
+        R ahora vale R * A.
+        Incrementar A.
+    Fin.
+Fin.
+
+Combinatorio es una funcion que devuelve un entero.
+Recibe: un entero m, un entero n:
+    R es un entero que vale Factorial evaluada en m.
+    R ahora vale R / Factorial evaluada en n.
+    R ahora vale R / Factorial evaluada en (m - n).
+    Devolver R.
+Fin.
