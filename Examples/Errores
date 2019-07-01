@@ -1,0 +1,24 @@
+/*
+** Los segmentos de código comentados son correctos sintacticamente,
+** pero no semanticamente. Por lo tanto, si se descomentara alguna línea
+** se produciría un error de compilación.
+*/
+
+Principal es una funcion que devuelve un entero:
+    I es un entero que vale 0.
+    /* I es un entero que vale 10. */
+
+    A es una cadena que vale "Hola".
+    /*A es una cadena que vale I.*/
+
+    B es una cadena que vale I + A.
+    /* B es una cadena que vale I - A */
+
+    Si B es igual a I + "\n":
+        J es una cadena que vale "---".
+        B ahora vale J.
+    Fin.
+    /* B ahora vale J. */
+
+    Mostrar B + "\n".
+Fin.

@@ -1,6 +1,6 @@
 /* 
 ** En este ejemplo se pone a prueba el uso de scopes
-** mediante bloques anidados.
+** mediante funciones y bloques anidados.
 */
 
 /* Variables globales */

@@ -1,3 +1,8 @@
+/*
+** En este ejemplo se pone a prueba el uso de la funcion
+** para leer del teclado
+*/
+
 Principal es una funcion que devuelve un entero:
     Mostrar "¡Bienvenido!\n".
 
